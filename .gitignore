@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+**/.DS_Store
+
+# Local config (may contain secrets)
+.env
+*.local
+
+# Claude Code / Agent memory
+.claude/
+memory/
+.agent/
+.agents/
+agents/
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+bun.lock
+bun.lockb
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+test-results/

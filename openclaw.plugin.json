@@ -1,0 +1,31 @@
+{
+  "id": "wii-cstt",
+  "main": "index.ts",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "Provider API key"
+      },
+      "apiUrl": {
+        "type": "string",
+        "description": "Custom provider API URL"
+      },
+      "model": {
+        "type": "string",
+        "description": "STT model to use"
+      },
+      "log": {
+        "type": "boolean",
+        "description": "Enable verbose logging"
+      },
+      "logErrors": {
+        "type": "boolean",
+        "description": "Enable error logging"
+      }
+    },
+    "required": []
+  }
+}
