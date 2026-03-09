@@ -42,6 +42,9 @@ export function register(api: any) {
                     const audioBuffer = await fs.readFile(mediaPath);
                     const base64 = audioBuffer.toString("base64");
 
+                    logFn("📡 Sending to: " + apiUrl);
+                    logFn("📦 Model: " + model);
+
                     const response = await fetch(apiUrl, {
                         method: "POST",
                         headers: {
@@ -64,7 +67,17 @@ export function register(api: any) {
                         }),
                     });
 
+                    logFn("📬 Response status: " + response.status);
+
+                    if (!response.ok) {
+                        const errorBody = await response.text();
+                        logErrFn("❌ API error: " + response.status + " " + response.statusText);
+                        logErrFn("❌ Response: " + errorBody);
+                        return null;
+                    }
+
                     const result: any = await response.json();
+                    logFn("📨 Response: " + JSON.stringify(result));
                     return result.choices?.[0]?.message?.content?.trim() || null;
                 } catch (error) {
                     logErrFn("❌ STT error: " + error);
@@ -83,12 +96,19 @@ export function register(api: any) {
             const transcription = await currentSttTask;
             currentSttTask = null;
 
+            logFn("📝 Transcription result: '" + transcription + "'");
+            logFn("📝 Transcription type: " + typeof transcription + ", length: " + (transcription?.length || 0));
+
             if (transcription) {
                 logFn("✅ STT complete! Injecting text into context: " + transcription);
                 return {
                     prependContext: `\n[Voice message from user: "${transcription}"]\n`
                 };
+            } else {
+                logFn("⚠️ Transcription is empty or null");
             }
+        } else {
+            logFn("⚠️ No STT task pending");
         }
         return {};
     });

@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an OpenCLAW plugin for speech-to-text (STT) functionality. It transcribes voice messages using a custom OpenAI-compatible API and injects the transcribed text into the conversation context.
+This is an OpenClaw plugin for speech-to-text (STT) functionality. It transcribes voice messages using a custom OpenAI-compatible API and injects the transcribed text into the conversation context.
 
 ## Commands
 
 This is a plain TypeScript plugin with no build/test scripts:
 - Development: Edit `index.ts` directly
-- No build step required - OpenCLAW loads `.ts` files directly
+- No build step required - OpenClaw loads `.ts` files directly
 
 ## Architecture
 
