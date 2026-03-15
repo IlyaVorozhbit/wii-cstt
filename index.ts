@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 
 let currentSttTask: Promise<string | null> | null = null;
+let currentMediaPath: string | null = null;
 
 export function register(api: any) {
     const {apiKey, apiUrl, model, log, logErrors} = api.pluginConfig || {};
@@ -23,6 +24,12 @@ export function register(api: any) {
 
             if (!mediaPath) return event;
 
+            // Skip if already processing this media file
+            if (currentMediaPath === mediaPath && currentSttTask) {
+                logFn("⏭️ Already processing this audio, skipping duplicate trigger");
+                return event;
+            }
+
             // Check that this is audio (not image/video)
             const normalizedMediaType = mediaType?.split(';')[0]?.trim();
             const normalizedMimeType = mimeType?.split(';')[0]?.trim();
@@ -36,6 +43,9 @@ export function register(api: any) {
             }
 
             logFn("🎤 Audio detected, starting STT in background...");
+
+            // Track current media path to avoid duplicate processing
+            currentMediaPath = mediaPath;
 
             currentSttTask = (async () => {
                 try {
@@ -95,6 +105,7 @@ export function register(api: any) {
             logFn("⏳ Waiting for STT response for prompt building...");
             const transcription = await currentSttTask;
             currentSttTask = null;
+            currentMediaPath = null;
 
             logFn("📝 Transcription result: '" + transcription + "'");
             logFn("📝 Transcription type: " + typeof transcription + ", length: " + (transcription?.length || 0));
